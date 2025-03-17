@@ -1,22 +1,22 @@
-// Importar dependencias
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// Configurar la aplicación Express
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Conectar a MongoDB Atlas
+
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => console.log("Conectado a MongoDB"))
   .catch(err => console.error("Error en la conexión", err));
 
-// Definir el esquema de póliza
+
 const polizaSchema = new mongoose.Schema({
     numeroPoliza: { type: String, unique: true, required: true },
     tipoSeguro: { type: String, enum: ["Auto", "Vida", "Hogar", "Salud"], required: true },
@@ -26,7 +26,7 @@ const polizaSchema = new mongoose.Schema({
 
 const Poliza = mongoose.model('Poliza', polizaSchema);
 
-// Rutas CRUD
+
 app.post('/polizas', async (req, res) => {
     try {
         const poliza = new Poliza(req.body);
@@ -72,7 +72,7 @@ app.delete('/polizas/:id', async (req, res) => {
     }
 });
 
-// Configuración del servidor
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
